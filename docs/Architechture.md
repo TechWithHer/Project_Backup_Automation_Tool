@@ -1,69 +1,140 @@
-# 📦 Project Overview
+# 🏗️ Architecture Overview - Backup Automation Tool
 
-## 🛠 Project Name
-**Backup Automation Tool**
+## 🎯 Objective
 
-## 🧩 Objective
-To automate the process of backing up files or directories into compressed formats (e.g., `.zip`, `.tar.gz`, `.tar.bz2`) with optional secure uploads to AWS S3. The tool also offers automated naming, error handling, and structured logging for professional use.
+To design a modular, reliable, and maintainable backup automation system that:
+- Creates compressed backups of files/folders
+- Names them with timestamps or user-defined names
+- Uploads them securely to AWS S3
+- Logs all activities
+- Supports easy future expansion (e.g., email alerts, scheduling)
 
-## 🧑‍💻 Target Users
-- Small and Medium Business Owners
-- DevOps Engineers
-- System Administrators
-- Freelancers needing automated backup solutions
+---
 
-## 🚀 Key Features
-- ✅ Command-line interface (CLI) for user input
-- 📁 Supports file & folder backup
-- 🗜 Compress to `.zip`, `.tar.gz`, `.tar.bz2`
-- 🕒 Auto or custom naming of backup files
-- ☁️ Optional AWS S3 upload with credentials
-- 🧾 Structured logging of all operations
-- 🧪 Unit tests included using `pytest`
+## 📦 Modular Design
 
-## 🧱 Tech Stack
-| Layer         | Technology          |
-|---------------|---------------------|
-| Programming   | Python 3.10+         |
-| Cloud         | AWS S3 (via `boto3`) |
-| Testing       | PyTest              |
-| Logging       | Python `logging`    |
-| Packaging     | `shutil`, `tarfile`, `zipfile`, `os`, `pathlib` |
+Project10\_Backup\_Automation\_Tool/
+├── main.py                  # Entry point for CLI
+├── backup/                  # Handles compression logic
+│   └── compressor.py
+├── storage/                 # AWS S3 uploader logic
+│   └── s3\_uploader.py
+├── utils/                   # Common utilities (e.g., logging)
+│   ├── logger.py
+│   └── helpers.py
+├── tests/                   # Unit tests
+│   ├── test\_main.py
+│   ├── test\_compressor.py
+│   └── test\_s3\_uploader.py
+├── logs/                    # All logs stored here
+│   └── backup.log
+├── backups/                 # Generated backups are saved here
+├── docs/                    # Documentation folder
+├── requirements.txt         # Python dependencies
+└── README.md                # Project overview
 
-## 🧩 Module Structure
+````
 
-| Module            | Purpose                                       |
-|-------------------|-----------------------------------------------|
-| `main.py`         | CLI entry point, handles user interaction     |
-| `backup_manager.py` | Manages backup creation logic               |
-| `s3_uploader.py`  | Handles AWS S3 file upload                    |
-| `logger.py`       | Manages logging configuration and handlers    |
-| `tests/`          | Pytest test suite for each module             |
-| `docs/`           | Professional documentation for the project    |
+---
 
-## 📈 Business Value
-This tool:
-- Reduces manual backup effort
-- Secures critical data via cloud storage
-- Saves time for non-technical users
-- Creates a reliable audit trail via logs
-- Can scale and integrate into CI/CD pipelines
+## 🧱 Component-Level Architecture (Mermaid)
 
-## 📦 Current Release
-**Version**: `v1.0.0`  
-**Status**: Production-ready  
-**Next Phase**: GitHub Actions CI integration + GUI frontend (optional)
+```mermaid
+graph TD
+    A[User CLI Input] --> B[main.py]
+    B --> C[Compressor Module (compressor.py)]
+    B --> D[S3 Upload Module (s3_uploader.py)]
+    B --> E[Logger (logger.py)]
 
-## 🔐 Security
-- AWS credentials not hardcoded; uses `boto3`'s secure practices
-- Backups stored locally or optionally uploaded
-- Customizable destination paths
+    C --> F[backups/ Folder]
+    D --> G[AWS S3 Bucket]
+    E --> H[logs/backup.log]
+````
 
-## 🧩 Future Enhancements
-- Email/Telegram notification post-backup
-- Scheduled backups (via Cron or task schedulers)
-- GUI or web dashboard
-- Integration with GitHub Actions, Jenkins
+---
 
-## 📅 Last Updated
-**July 25, 2025**
+## ⚙️ Data Flow Explanation
+
+1. **User Input** via `main.py`:
+
+   * Source folder path
+   * Compression type (`zip`, `tar.gz`, etc.)
+   * Backup file name or auto-timestamp
+   * Upload to S3: `yes` or `no`
+
+2. **Backup Creation**:
+
+   * Uses `compressor.py` to compress source
+   * Stores backup in `backups/`
+
+3. **S3 Upload**:
+
+   * If enabled, `s3_uploader.py` uploads to a configured AWS S3 bucket
+
+4. **Logging**:
+
+   * All actions (start time, end time, file size, status) logged via `logger.py`
+
+---
+
+## 🛠️ Tools & Tech Stack
+
+| Component     | Technology                     |
+| ------------- | ------------------------------ |
+| Language      | Python 3.10+                   |
+| Cloud Storage | AWS S3                         |
+| Compression   | `shutil`, `tarfile`, `zipfile` |
+| Logging       | Python `logging`               |
+| Testing       | `unittest`, `pytest`           |
+| CI/CD Ready   | GitHub Actions (planned)       |
+
+---
+
+## 🔒 Security Considerations
+
+* AWS credentials are not hardcoded; use `.env` or AWS CLI profiles
+* Future support for encrypted backups (e.g., AES) is planned
+
+---
+
+## 🔄 Future Enhancements
+
+| Feature             | Status     |
+| ------------------- | ---------- |
+| Scheduling via Cron | ⏳ Planned  |
+| Email notifications | ⏳ Planned  |
+| Web dashboard view  | ⏳ In R\&D  |
+| Encrypted backups   | ✅ Optional |
+
+---
+
+## 📎 Related Files
+
+* [User Guide](./01_User_Guide.md)
+* [Use Case Stories](./07_Use_Case_Stories.md)
+
+---
+
+```
+
+### 📌 Where to Place This
+
+In your folder:
+
+```
+
+docs/
+├── 01\_User\_Guide.md
+├── 02\_Architecture.md     ✅ <--- THIS FILE
+├── 07\_Use\_Case\_Stories.md
+
+```
+
+---
+
+Would you also like:
+- A **Mermaid diagram** preview embedded in your GitHub readme?
+- Or export this as **PDF** for client/enterprise presentations?
+
+Let me know and I’ll prepare it for you.
+```
